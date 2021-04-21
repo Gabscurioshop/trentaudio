@@ -1,0 +1,31 @@
+<!-- /templates/my-form.html-->
+
+<html>
+    <head>
+        <title>Trentaudio</title>
+    </head>
+    <body>
+	<h3>Audio File Name</h3>
+	<h3>Metadata Type</h3>
+	<h3>Describe metadata edit</h3>
+	
+        <form action="/form-handler" method="POST">
+            <div>
+
+		<input type="text" name="query">
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+
+    <!-- minimal styling -->
+    <style>
+        form {
+            margin: 1%;
+        }
+
+        div {
+            margin: 1% 0;
+        }
+    </style>
+</html>
