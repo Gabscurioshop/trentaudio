@@ -24,15 +24,25 @@
 
     <body>
 	<table>
+	<th>Audio_File_ID</th>
         <!-- nested for loops in jinja template -->
 	{%for row in rows%}
 	    <tr>
+	    <!--<td>{{ row.id }}</td>-->      
 	    {%for col in row%}
+	    
 	        <td>{{col}}</td>
 	    {%endfor%}
 	    </tr>
 	{%endfor%}
 	</table>
+	 <form action="/audio-file-handler" method="POST">
+	    <select name= audio_ids method="GET" action="/" >
+        {% for id in audio_ids %}
+        <option value= "{{id}}" SELECTED>{{id}}</option>"
+        {% endfor %}
+        <input type="submit" value="Submit">
+    </form>
     </body>
 
 </html>
