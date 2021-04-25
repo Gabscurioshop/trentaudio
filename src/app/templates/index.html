@@ -6,7 +6,8 @@
  <form action="/form-handler" method="POST">
     <div>
     Search
-     <select name= choices method="GET" action="/" >
+    <br>
+     By: <select name= choices method="GET" action="/" >
     {% for choice in choices %}
     <option value= "{{choice}}" SELECTED>{{choice}}</option>"
     {% endfor %}
@@ -15,4 +16,5 @@
 
     <input type="submit" value="Submit">
  </form>
+
 {% endblock %}

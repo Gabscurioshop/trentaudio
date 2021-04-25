@@ -1,19 +1,13 @@
 import psycopg2
 from config import config
 
-def get_audio(aud_id):
-#retrieve audio file data
-    query = "SELECT * FROM AUDIO_FILE WHERE title = '{}'" .format(aud_id)
-    results = display(query)
-    return results
+#def transcript_error(desc):
+#add transcript error to database
+    #query = "INSERT INTO REPORTS '{}'" .format(desc)
+    #results = save_to_db(query)
+    #return results
     
-def get_transcript(trans_id):
-#retrieve transcript data
-    query = "SELECT * FROM TRANSCRIPT WHERE audio_file_id = '{}'" .format(trans_id)
-    results = display(query)
-    return results
-    
-def display(query):
+def save_to_db(query):
 #Connect to database
     """ Connect to the PostgreSQL database server """
     conn = None

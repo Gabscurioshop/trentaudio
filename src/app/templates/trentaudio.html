@@ -1,0 +1,18 @@
+<!-- Trentaudio Welcome page-->
+{% extends "base.html" %}
+{% block content %}
+<h1>Welcome to Trentaudio!</h1>
+<br>
+<!--Login-->
+<form action="/login-handler" method="POST">
+<input type="submit" value="Login">
+</form>
+<!--Signup-->
+<form action="/signup-handler" method="POST">
+<input type="submit" value="Sign Up">
+</form>
+<!--Continue As Guest-->
+<form action="/signup-handler" method="POST">
+<input type="submit" value="Continue As Guest">
+</form>
+{% endblock %}

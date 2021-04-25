@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<form>
+     <input type="button" onclick="history.back()" value = "Back to Audio File"/>
+</form>
 <h1>Report</h1>
-<p>Click <a href="/">here</a> to go home.</p>
+<form action="/form-handler" method="POST">
+    <div>
+    <h2> Error Description</h2>
+    <input type="text" name="error_descripton">
+    </div>
+     <input type ="submit" value="Submit" onclick="history.back()">
+ </form>
+
 {% endblock %}

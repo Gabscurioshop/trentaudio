@@ -1,7 +1,8 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, flash
 from search import search_audio
-from display_data import display
+from display_data import get_audio, get_transcript
+#from report import transcript_error
 
 #create application object
 app = Flask(__name__)
@@ -20,21 +21,28 @@ def results():
     choice = request.form['choices']#type of search
     query = request.form['query']#read user input
     rows = search_audio(choice, query)#get database results
-    audio_ids = [rows[i][0] for i in range(0,len(rows))]
-    return render_template('my-result.html', rows=rows, audio_ids=audio_ids)
+    
+    titles = [rows[i][5] for i in range(0,len(rows))]
+    return render_template('my-result.html', rows=rows, titles=titles)
     
 @app.route('/audio-file-handler',methods=['POST'])
 def audio_file():
 #display data for selected  audio file
-    audio_data = request.form['audio_ids']
-    row = display(audio_data)
-    return render_template('audio-file.html',row=row)
-'''    
-@app.route('/report-handler')
+    audio_data = request.form['titles']
+    row = get_audio(audio_data)
+    title = row[0][5]#title of audio_file
+    raw_audio = row[0][7]#link to raw audio
+    transcript_data = get_transcript(row[0][0])#audio_file_id
+    transcript = transcript_data[0][3]#link to transcript
+    metadata = row[0][6]#description
+    return render_template('audio-file.html',title=title,raw_audio=raw_audio,transcript=transcript,metadata=metadata)
+   
+@app.route('/report-handler', methods=['POST'])
 #get user to file a report
 def report():
+    #desc = request.form['error_description']
+    #transcript_error(desc)
     return render_template('report.html')
-'''
 
 if __name__ == '__main__':
     app.run(debug = True)
