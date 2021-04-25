@@ -3,6 +3,16 @@
 
 <h2>Welcome to Trentaudio!</h2>
 <br>
-<p>Click <a href="/logout">here</a> to logout.</p>
+ <form action="/form-handler" method="POST">
+    <div>
+    Search
+     <select name= choices method="GET" action="/" >
+    {% for choice in choices %}
+    <option value= "{{choice}}" SELECTED>{{choice}}</option>"
+    {% endfor %}
+    <input type="text" name="query">
+    </div>
 
+    <input type="submit" value="Submit">
+ </form>
 {% endblock %}
