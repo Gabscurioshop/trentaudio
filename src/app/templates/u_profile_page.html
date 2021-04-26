@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2> Welcome! </h2>
+<br>
+    Start Searching:
+    <div>
+    <input type="button" value="Search" onclick="window.location.href='/search'">
+    Or Edit Your Account Information:
+    <input type="button" value="Change Email" onclick="window.location.href='/edit_email_form'"> 
+    <input type="button" value="Change Name" onclick="window.location.href='/edit_name_form'"> 
+    <input type="button" value="Change Password" onclick="window.location.href='/edit_password_form'"> 
+    </div>
+    
+{% endblock %}
+    

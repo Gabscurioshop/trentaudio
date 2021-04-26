@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Change Email</h2>
+<br>
+    <form action="/edit_email" method="POST">
+        <div>
+        New Email
+        <input type="text" name="new_email">
+        </div>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}
+    

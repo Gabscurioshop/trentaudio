@@ -1,10 +1,61 @@
-{% extends "base.html" %}
-{% block content %}
+<!--Results page-->
 
-<h2>Results</h2>
-<br>
+<html>
+    <head>
+        <title>Search Results</title>
+    </head>
+    <!--Returns to search page-->
+     <input type ="button" value="Back to Search" onclick="history.back()">
+     
+    <!-- Adding some style to table (OPTIONAL) -->
+    <style type="text/css">
 
-Matching Files: {{name}}
-<p><a href="{{ url_for('index') }}">Return to search page</a></p>
+    th:tr{
+        color: blue;
+    }
+    tr:nth-of-type(2n){
+        border: 1px solid black;
+        background-color: rgba(150, 150, 150, 0.5);
+    }
 
-{% endblock %}
+    td{
+        padding: 8px 8px;
+        border: 1px solid black;
+    }
+    </style>
+    
+    <body>
+	<h1>Audio Files</h1>
+        <!--Display results-->
+      <!-- IF there are no tuples, print "No results found"-->
+     {%if size == 0 %}
+     No results found
+     
+     {% else %}
+     <!-- Display Audio file id, title, description -->
+     <table>
+     <th>ID</th>
+	 <th>Title</th>
+	 <th>Description</th>
+	 <th>View</th>
+	 {%for row in rows%}
+	    <tr>      
+	    {%for col in row%}
+	    
+	        <td>{{col}}</td>
+	    {%endfor%}
+	    </tr>
+	{%endfor%}
+	</table>
+	 <!--Click on view to see more info about file-->
+	    <form action="/audio" method="POST">
+	    <select name= "af_ids" method="GET" action="/" >
+        {% for id in af_ids %}
+        <option value= "{{id}}" SELECTED>{{id}}</option>"
+        {% endfor %}
+     <input type="submit" value="View">
+    </form>
+    {%endif%}
+    </body>
+    
+</html>

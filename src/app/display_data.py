@@ -3,7 +3,7 @@ from config import config
 
 def get_audio(aud_id):
 #retrieve audio file data
-    query = "SELECT * FROM AUDIO_FILE WHERE title = '{}'" .format(aud_id)
+    query = "SELECT * FROM AUDIO_FILE WHERE audio_file_id = '{}'" .format(aud_id)
     results = display(query)
     return results
     
@@ -17,7 +17,7 @@ def display(query):
 #Connect to database
     """ Connect to the PostgreSQL database server """
     conn = None
-    rows = ''
+    row = ''
     try:
         # read connection parameters from database.ini
         params = config()

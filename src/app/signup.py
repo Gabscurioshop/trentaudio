@@ -1,11 +1,9 @@
 import psycopg2
 from flask import Flask, flash
 from config import config
-from werkzeug.security import generate_password_hash, check_password_hash
 
-def verify_user(email, password):
+def create_user(email, name, password):
     conn = None
-    curr_user = None
     try:
         # read connection parameters from database.ini
         params = config()
@@ -16,15 +14,23 @@ def verify_user(email, password):
       
         # create a cursor
         cur = conn.cursor()
-        cur.execute("SELECT USR_PASSWORD FROM USR WHERE USR_EMAIL = '{}'".format(email))
-        curr_pass = cur.fetchone()[0]
-   
-        print(curr_pass)
-        print(password)
-        if check_password_hash(curr_pass, password):
-            cur.execute("SELECT ROLE FROM USR WHERE USR_EMAIL = '" + email + "'")
-            curr_user = cur.fetchone()[0]
-            print(curr_user)
+        str1 = "INSERT INTO USR(USR_EMAIL, USR_USERNAME, USR_PASSWORD, ROLE) VALUES ("
+        str1 += "'" + email + "',"
+        str1 += " '" + name + "',"
+        str1 += " '" + password + "',"
+        str1 += " 'user')"
+        cur.execute(str1)
+        str2 = "INSERT INTO CASUAL_USR(USR_EMAIL, IS_BLOCKED) VALUES ("
+        str2 += "'" + email + "',"
+        str2 += " 'N')"
+        cur.execute(str2)
+        try:
+            conn.commit()
+        except psycopg2.Error as e:
+            t_message = "Database error: " + e + "/n SQL: " + s
+            print(t_message)
+            return
+        
         # close the communication with the PostgreSQL
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
@@ -33,5 +39,6 @@ def verify_user(email, password):
         if conn is not None:
             conn.close()
             print('Database connection closed.')
-    # return the query result
-    return curr_user
+    return
+    
+    

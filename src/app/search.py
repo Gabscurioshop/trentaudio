@@ -1,10 +1,12 @@
 import psycopg2
 from config import config
 
+#creates search queries to retrieve audio file data
+#returns audio_file_id, title and description of each file
 def keyword(cur, query):
 #keyword search
     cur.execute("CREATE VIEW KEYWORD_SEARCH AS SELECT * FROM KEYWORDS WHERE  '{}' ILIKE ANY(KEYWORD)" .format(query))
-    cur.execute("SELECT * FROM (KEYWORD_SEARCH NATURAL JOIN AUDIO_FILE)")
+    cur.execute("SELECT AUDIO_FILE_ID, TITLE, DESCRIPTION FROM (KEYWORD_SEARCH NATURAL JOIN AUDIO_FILE)")
     rows = cur.fetchall()
     return rows
  
@@ -12,7 +14,7 @@ def interviewer(cur, query):
 #interviewer search
     cur.execute("CREATE VIEW INTERVIEWER_SEARCH AS SELECT INTERVIEWER_ID FROM INTERVIEWER WHERE NAME ILIKE '{}%'".format(query))
     cur.execute("CREATE VIEW INTERVIEWER_AUDIO AS SELECT AUDIO_FILE_ID FROM (INTERVIEWER_SEARCH NATURAL JOIN INTERVIEWED_BY)")
-    cur.execute("SELECT DISTINCT * FROM (INTERVIEWER_AUDIO NATURAL JOIN AUDIO_FILE)")
+    cur.execute("SELECT DISTINCT AUDIO_FILE_ID, TITLE, DESCRIPTION FROM (INTERVIEWER_AUDIO NATURAL JOIN AUDIO_FILE)")
     rows = cur.fetchall()
     return rows
     
@@ -20,7 +22,7 @@ def interviewee(cur, query):
 #interviewee search
     cur.execute("CREATE VIEW INTERVIEWEE_SEARCH AS SELECT INTERVIEWEE_ID FROM INTERVIEWEE WHERE name ILIKE '{}%'".format(query))
     cur.execute("CREATE VIEW INTERVIEWEE_AUDIO AS SELECT AUDIO_FILE_ID FROM (INTERVIEWEE_SEARCH NATURAL JOIN INTERVIEW_OF)")
-    cur.execute("SELECT DISTINCT AUDIO_FILE_ID FROM (INTERVIEWEE_AUDIO NATURAL JOIN AUDIO_FILE)")
+    cur.execute("SELECT DISTINCT AUDIO_FILE_ID, TITLE, DESCRIPTION FROM (INTERVIEWEE_AUDIO NATURAL JOIN AUDIO_FILE)")
     rows = cur.fetchall()
     return rows
     
@@ -28,7 +30,7 @@ def race(cur, query):
 #race search
     cur.execute("CREATE VIEW RACE_SEARCH AS SELECT INTERVIEWEE_ID FROM INTERVIEWEE_RACES WHERE race ILIKE'{}%'".format(query)) 
     cur.execute("CREATE VIEW INTERVIEWEE_RACE_AUDIO AS SELECT AUDIO_FILE_ID FROM (RACE_SEARCH NATURAL JOIN INTERVIEW_OF)")
-    cur.execute("SELECT DISTINCT * FROM (INTERVIEWEE_RACE_AUDIO NATURAL JOIN AUDIO_FILE)")
+    cur.execute("SELECT DISTINCT AUDIO_FILE_ID, TITLE, DESCRIPTION FROM (INTERVIEWEE_RACE_AUDIO NATURAL JOIN AUDIO_FILE)")
     rows = cur.fetchall()
     return rows
      
@@ -36,7 +38,7 @@ def city(cur, query):
 #city search
     cur.execute("CREATE VIEW CITY_SEARCH AS SELECT INTERVIEWEE_ID FROM INTERVIEWEE WHERE city ILIKE '{}%'".format(query))
     cur.execute("CREATE VIEW INTERVIEWEE_CITY_AUDIO AS SELECT AUDIO_FILE_ID FROM (CITY_SEARCH NATURAL JOIN INTERVIEW_OF)")
-    cur.execute("SELECT DISTINCT * FROM (INTERVIEWEE_CITY_AUDIO NATURAL JOIN AUDIO_FILE)")
+    cur.execute("SELECT DISTINCT AUDIO_FILE_ID, TITLE, DESCRIPTION FROM (INTERVIEWEE_CITY_AUDIO NATURAL JOIN AUDIO_FILE)")
     rows = cur.fetchall()
     return rows
 

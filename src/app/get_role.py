@@ -1,9 +1,8 @@
 import psycopg2
 from flask import Flask, flash
 from config import config
-from werkzeug.security import generate_password_hash, check_password_hash
 
-def verify_user(email, password):
+def check_role(email):
     conn = None
     curr_user = None
     try:
@@ -16,15 +15,9 @@ def verify_user(email, password):
       
         # create a cursor
         cur = conn.cursor()
-        cur.execute("SELECT USR_PASSWORD FROM USR WHERE USR_EMAIL = '{}'".format(email))
-        curr_pass = cur.fetchone()[0]
-   
-        print(curr_pass)
-        print(password)
-        if check_password_hash(curr_pass, password):
-            cur.execute("SELECT ROLE FROM USR WHERE USR_EMAIL = '" + email + "'")
-            curr_user = cur.fetchone()[0]
-            print(curr_user)
+        cur.execute("SELECT ROLE FROM USR WHERE USR_EMAIL = '{}'".format(email))
+        curr_user = cur.fetchone()[0]
+        
         # close the communication with the PostgreSQL
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:

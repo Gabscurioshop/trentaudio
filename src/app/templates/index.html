@@ -3,18 +3,15 @@
 
 <h2>Welcome to Trentaudio!</h2>
 <br>
- <form action="/form-handler" method="POST">
+ <form action="/" method="POST">
     <div>
-    Search
+    Search for all your audio file needs!
     <br>
-     By: <select name= choices method="GET" action="/" >
-    {% for choice in choices %}
-    <option value= "{{choice}}" SELECTED>{{choice}}</option>"
-    {% endfor %}
-    <input type="text" name="query">
+    <input type="button" value="Search Audio" onclick="window.location.href='/search'"> 
+    <input type="button" value="Login" onclick="window.location.href='/login'">
+    Don't have an account? 
+    <input type="button" value="Sign-Up" onclick="window.location.href='/signup'">
     </div>
-
-    <input type="submit" value="Submit">
  </form>
 
 {% endblock %}
