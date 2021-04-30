@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Trentaudio</h2>
+<h2>Search</h2>
 <br>
  <form action="/results" method="POST">
     <div>
-    Search
-    <br>
      By: <select name= choices method="GET" action="/search" >
     {% for choice in choices %}
     <option value= "{{choice}}" SELECTED>{{choice}}</option>"

@@ -1,17 +1,28 @@
 {% extends "base.html" %}
+
 {% block content %}
-
-<h2>Welcome to Trentaudio!</h2>
+<style>
+div{
+text-align: right;
+}
+</style>
+<div>
+<form action="/" method="POST">
+ <input type="button" value="Search Audio" onclick="window.location.href='/search'"> 
+</form>
+</div>
+<h1> 
+ <center><font face="broadway" size="6">Welcome to Trentaudio!</font></center> 
+ </h1>
 <br>
- <form action="/" method="POST">
-    <div>
-    Search for all your audio file needs!
-    <br>
-    <input type="button" value="Search Audio" onclick="window.location.href='/search'"> 
-    <input type="button" value="Login" onclick="window.location.href='/login'">
-    Don't have an account? 
-    <input type="button" value="Sign-Up" onclick="window.location.href='/signup'">
-    </div>
- </form>
+<center>
+<form action="/" method="POST">
+ <input type="button" value="Login" onclick="window.location.href='/login'">
+ <br>
+ <!--Don't have an account?--> 
+ <input type="button" value="Sign-Up" onclick="window.location.href='/signup'">
+</form>
+</center>
+<!--<img src="Trentoniana-Logo.png" alt="Trentaudio logo"> </img>-->
+{%endblock%}
 
-{% endblock %}
