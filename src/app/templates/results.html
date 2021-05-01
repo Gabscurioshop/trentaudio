@@ -41,23 +41,21 @@
 	 <th>Description</th>
 	 <th>View</th>
 	 {%for row in rows%}
-	    <tr>      
+	    <tr> 
+	         
 	    {%for col in row%}
 	    
 	        <td>{{col}}</td>
 	    {%endfor%}
+	    <td>
+	    <!--Click on view to see more info about file-->
+        <form action="/audio" method ="POST">
+        <button name="id" type="submit" value="{{row[0]}}">VIEW</button>
+        </form>
 	    </tr>
 	{%endfor%}
 	</table>
-	 <!--Click on view to see more info about file-->
-	    <form action="/audio" method="POST">
-	    <select name= "af_ids" method="GET" action="/" >
-        {% for id in af_ids %}
-        <option value= "{{id}}" SELECTED>{{id}}</option>"
-        {% endfor %}
-     <input type="submit" value="View">
-    </form>
     {%endif%}
     </body>
-    {%endblock%}
+{%endblock%}
    

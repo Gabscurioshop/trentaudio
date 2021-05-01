@@ -4,16 +4,17 @@
 <form>
     <input type ="button" value="Return to Results" onclick="history.back()">
     
-    <input type="button" onclick="window.location.href='/'" value = "Back to Search"/>
+    <input type="button" onclick="window.location.href='/search'" value = "Back to Search"/>
 </form>
 
-<h1>{{a_file}}</h1>
-<h2>Link to Audio</h2>
-<!--Placeholder for playback bar-->
-
-{{raw_audio}}
+<h1>{{title}}</h1>
+<h2>Audio</h2>
+<!--Playback bar-->
+<audio controls>
+<source src = "{{raw_audio}}"/>
+</audio>
 <h3>Full Transcript</h3>
-{{transcript}}
+<iframe src="{{transcript}}" width="640" height="480"></iframe>
 <h4>Metadata List</h4>
 {{metadata}}
 
