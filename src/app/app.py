@@ -101,10 +101,10 @@ def results():
     size = len(rows)#number of tuples
     return render_template('results.html', rows=rows,size=size,af_ids=af_ids)
     
-@app.route('/audio', methods=['POST'])
+@app.route('/audio', methods=['GET','POST'])
 #display audio info for one file
 def audio_file():
-    audio_data = request.form['af_ids'] 
+    audio_data = request.form['id']
     a_file = get_audio(audio_data)
     title = a_file[0][5]#title of audio_file
     raw_audio = a_file[0][7]#link to raw audio
