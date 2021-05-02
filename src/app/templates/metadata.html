@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/audio" method="POST">
+<button name = "id" type="submit" value ="{{af_id}}" onclick="window.location.href='/audio'">Back to Audio</button>
+</form>
+<h1>Edit Metadata Request</h1>
+<form action="/metadata_submit" method="POST">
+  <div>
+  Audio or Transcript?: <select name= types method="GET">
+  {% for type in types %}
+  <option value= "{{type}}" SELECTED>{{type}}</option>"
+  {% endfor %}
+  </select>
+  <br>
+  DESCRIPTION:
+  <input type="text" name="descripton">
+  </div>
+  <button name="id" type ="submit" value="{{af_id}}">SUBMIT</button>
+ </form>
+
+{% endblock %}

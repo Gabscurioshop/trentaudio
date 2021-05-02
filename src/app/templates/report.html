@@ -1,16 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<form>
-     <input type="button" onclick="history.back()" value = "Back to Audio File"/>
+<form action="/audio" method="POST">
+<button name = "id" type="submit" value ="{{af_id}}" onclick="window.location.href='/audio'">Back to Audio</button>
 </form>
-<h1>Report</h1>
-
-<form action="/report" method="POST">
+<h1>Report Transcript Error</h1>
+<form action="/report_submit" method="POST">
     <div>
-    <h2> Error Description</h2>
+    <h2> Description</h2>
     <input type="text" name="error_descripton">
     </div>
-     <input type ="submit" value="Submit" onclick="history.back()">
+     <button name="id" type ="submit" value="{{af_id}}">SUBMIT</button>
  </form>
 
 {% endblock %}

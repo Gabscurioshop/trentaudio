@@ -23,7 +23,7 @@ def display(query):
         params = config()
 
         # connect to the PostgreSQL server
-        print('Connecting to the %s database...' % (params['database']))
+        print('Connecting to the %s database from display...' % (params['database']))
         conn = psycopg2.connect(**params)
         print('Connected.')
       

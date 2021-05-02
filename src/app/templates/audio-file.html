@@ -2,9 +2,7 @@
 {% block content %}
 <!--Return to search results page or Search bar-->
 <form>
-    <input type ="button" value="Return to Results" onclick="history.back()">
-    
-    <input type="button" onclick="window.location.href='/search'" value = "Back to Search"/>
+     <input type ="button" value="Back to search"  onclick="window.location.href='/search'">
 </form>
 
 <h1>{{title}}</h1>
@@ -18,11 +16,12 @@
 <h4>Metadata List</h4>
 {{metadata}}
 
+<!--Display report buttons to logged-in users only-->
     <form action="/report" method="POST">
-        <input type="submit" value="Report Transcript Error">
+     <button name="id" type="submit" value="{{af_id}}">REPORT TRANSCRIPT ERROR</button>
     </form>
-     <form action="/metadata-handler" method="POST">
-        <input type="submit" value="Submit metadata">
+     <form action="/metadata" method="POST">
+     <button name="id" type="submit" value="{{af_id}}">SUBMIT METADATA</button>
      </form>
     
 {% endblock %}

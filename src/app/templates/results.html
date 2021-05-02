@@ -6,8 +6,8 @@
         <title>Search Results</title>
     </head>
     <!--Returns to search page-->
-     <input type ="button" value="Back to Search" onclick="history.back()">
-     
+     <input type ="button" value="Back to Search" onclick="window.location.href='/search'">
+      
     <!-- Adding some style to table (OPTIONAL) -->
     <style type="text/css">
 
@@ -27,14 +27,16 @@
     
     <body>
 	<h1>Audio Files</h1>
-        <!--Display results-->
+	  Sort by Date: <p><button onclick="sortTable(0)">Oldest</button> 
+	   <button onclick="sortTable(1)">Recent</button> 
+	   </p>
       <!-- IF there are no tuples, print "No results found"-->
      {%if size == 0 %}
      No results found
      
      {% else %}
      <!-- Display Audio file id, title, description -->
-     <table>
+     <table id ="myTable" >
      <th>ID</th>
      <th>Date</th>
 	 <th>Title</th>
@@ -55,6 +57,51 @@
 	    </tr>
 	{%endfor%}
 	</table>
+	<!--Organize search results by date-->
+	<script>
+        function sortTable(n) {
+          var table, rows, switching, i, x, y, shouldSwitch;
+          table = document.getElementById("myTable");
+          switching = true;
+          /*Make a loop that will continue until
+          no switching has been done:*/
+          while (switching) {
+            // no switching is done:
+            switching = false;
+            rows = table.rows;
+            /*Loop through all table rows:*/
+            for (i = 1; i < (rows.length - 1); i++) {
+              shouldSwitch = false;
+              /*Get the two dates you want to compare,
+              one from current row and one from the next:*/
+              x = rows[i].getElementsByTagName("TD")[1];
+              y = rows[i + 1].getElementsByTagName("TD")[1];
+              //check if the two rows should switch place:
+              if(n == 0){//oldest date
+                  if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                  }
+              }
+              else if(n == 1){//recent date
+                  if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch = true;
+                    break;
+                  }
+              }
+            }
+            if (shouldSwitch) {
+              /*If a switch has been marked, make the switch
+              and mark that a switch has been done:*/
+              rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+              switching = true;
+            }
+          }
+        }
+        </script>
+
     {%endif%}
     </body>
 {%endblock%}
