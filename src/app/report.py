@@ -3,7 +3,7 @@ from config import config
     
 def trans_report(cur, err_desc,af_id):
     res = ''
-    cur.execute("INSERT INTO REPORT (type,audio_file_id, usr_email, a_email, decision) VALUES ('trans_error','{}', 'vbradley@university.com', NULL,'pending')".format(af_id))
+    cur.execute("INSERT INTO REPORT (type,audio_id, usr_email, a_email, decision, date_created) VALUES ('trans_error','{}', 'vbradley@university.com', NULL,'pending',current_timestamp)".format(af_id))
     cur.execute("CREATE VIEW MAX_TRANS AS SELECT USR_EMAIL, MAX(REPORT_NUM) FROM REPORT WHERE TYPE='trans_error' GROUP BY USR_EMAIL")
     cur.execute("CREATE VIEW USR_ERR AS SELECT MAX FROM MAX_TRANS WHERE USR_EMAIL = 'vbradley@university.com'")
     cur.execute("SELECT * FROM USR_ERR")
@@ -44,4 +44,3 @@ def add_error(err_desc, af_id):
             print('Database connection closed.')
     # return the query result from fetchall()
     return row
-

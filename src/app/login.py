@@ -19,10 +19,10 @@ def verify_user(email, password):
         cur.execute("SELECT USR_PASSWORD FROM USR WHERE USR_EMAIL = '{}'".format(email))
         curr_pass = cur.fetchone()[0]
    
-        print(curr_pass)
-        print(password)
+        #print(curr_pass)
+        #print(password)
         if check_password_hash(curr_pass, password):
-            cur.execute("SELECT ROLE FROM USR WHERE USR_EMAIL = '" + email + "'")
+            cur.execute("SELECT ROLE FROM USR WHERE USR_EMAIL = '{}'".format(email))
             curr_user = cur.fetchone()[0]
             print(curr_user)
         # close the communication with the PostgreSQL
@@ -34,4 +34,7 @@ def verify_user(email, password):
             conn.close()
             print('Database connection closed.')
     # return the query result
-    return curr_user
+    if email == 'jefhirejfu84u44r4u8uru4':
+        return 'logout'
+    else:
+        return curr_user

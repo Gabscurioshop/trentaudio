@@ -1,4 +1,4 @@
-#app.py
+# app.py
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,10 +7,26 @@ from display_data import get_audio, get_transcript
 from signup import create_user
 from login import verify_user
 from get_role import check_role
+from get_status import check_status
 from edit_email import change_email
+from edit_password import change_password
+from edit_name import change_name
+from search_users import display_users
+from search_records import display_records
+from search_approved_records import display_approved_records
+from block_unblock import edit_block
+from decide_on_report import make_decision
+from get_link import get_link
+from edit_transcript_link import edit_t_link
+from edit_audio_link import edit_a_link
+from edit_metadata import edit_md
+from add_file import create_file
+from edit_role import set_role
 from report import add_error
 from metadata import edit_md
+from privilege_search_users import privilege_display_users
 import hashlib
+import datetime
 #from report import transcript_error
 
 #create application object
@@ -19,7 +35,6 @@ auth = HTTPBasicAuth()
 #Flask-wtf requires encryption key
 app.config['SECRET_KEY'] = 'g77MdJuwaAXaLJ20Lx1DRcs161nPSOZP'
 
-#home route
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -27,23 +42,237 @@ def home():
 @app.route('/user_profile') 
 @auth.login_required
 def u_profile():
+    flash('Hello {}!'.format(auth.current_user()))
     return render_template('u_profile_page.html')
     
 @app.route('/admin_profile') 
 @auth.login_required
 def a_profile():   
+    flash('Hello {}!'.format(auth.current_user()))
     return render_template('a_profile_page.html')
     
+@app.route('/sadmin_profile')
+@auth.login_required
+def sa_profile():
+    flash('Hello {}!'.format(auth.current_user()))
+    return render_template('sa_profile_page.html')
+    
 @app.route('/edit_email_form', methods=['GET', 'POST'])
+@auth.login_required
 def e_email(): 
     return render_template('edit_email.html')
-    
+
 @app.route('/edit_email', methods=['GET', 'POST'])
+@auth.login_required
 def edit_email():
     email = request.form['new_email']
-    change_email(email)
-    return render_template('u_profile_page.html')
+    change_email(email, auth.current_user())
+    if check_role(auth.current_user()) == 'user':
+        return render_template('u_profile_page.html')
+    elif check_role(auth.current_user()) == 'admin':
+        return render_template('a_profile_page.html')
+ 
+@app.route('/edit_password_form', methods=['GET', 'POST'])
+@auth.login_required
+def e_password():
+    return render_template('edit_password.html')
     
+@app.route('/edit_password', methods=['GET', 'POST'])
+@auth.login_required
+def edit_password():
+    password = request.form['new_password']
+    password = generate_password_hash(password)
+    change_password(auth.current_user(), password)
+    if check_role(auth.current_user()) == 'user':
+        return render_template('u_profile_page.html')
+    elif check_role(auth.current_user()) == 'admin':
+        return render_template('a_profile_page.html')
+    
+@app.route('/edit_name_form', methods=['GET', 'POST'])
+@auth.login_required
+def e_name():
+    return render_template('edit_name.html')
+    
+@app.route('/edit_name', methods=['GET', 'POST'])
+@auth.login_required
+def edit_name():
+    name = request.form['new_name']
+    change_name(auth.current_user(), name)
+    if check_role(auth.current_user()) == 'user':
+        return render_template('u_profile_page.html')
+    elif check_role(auth.current_user()) == 'admin':
+        return render_template('a_profile_page.html')
+        
+@app.route('/search_users', methods=['GET', 'POST'])
+@auth.login_required     
+def search_users():
+    return render_template('search_user.html')  
+        
+@app.route('/view_users', methods=['GET', 'POST'])
+@auth.login_required
+def view_users():
+    userquery = request.form['user']
+    rows = display_users(userquery)
+    u_emails = [rows[i][0] for i in range(0, len(rows))]
+    size = len(rows)
+    return render_template('user_results.html', rows=rows, size=size, u_emails=u_emails)
+    
+@app.route('/block', methods=['GET', 'POST'])
+@auth.login_required
+def change_block_status():
+    user = request.form['email']
+    status = check_status(user)
+    edit_block(user, status)
+    return render_template('search_user.html')
+    
+@app.route('/search_reports', methods=['GET', 'POST'])
+@auth.login_required
+def search_reports():
+    return render_template('search_reports.html')
+    
+@app.route('/view_reports', methods=['GET', 'POST'])
+@auth.login_required
+def view_reports():    
+    r_type = request.form['report_type']
+    order_by = request.form['order']
+    rows = display_records(r_type, order_by)
+    r_ids = [rows[i][0] for i in range(0, len(rows))]
+    size = len(rows)
+    return render_template('report_results.html', rows=rows, size=size, r_ids=r_ids)
+    
+@app.route('/approve', methods=['GET', 'POST'])
+@auth.login_required
+def approve_report():
+    report_num = request.form['pos_decision']
+    decide_on(report_num, 'Approved')
+    return render_template('search_reports.html')
+    
+@app.route('/disapprove', methods=['GET', 'POST'])
+@auth.login_required
+def reject_report():
+    report_num = request.form['neg_decision'] 
+    decide_on(report_num, 'Disapproved') 
+    return render_template('search_reports.html')  
+
+@app.route('/decide_on', methods=['GET', 'POST'])
+@auth.login_required
+def decide_on(report_num, decision):
+    email = auth.current_user()
+    make_decision(report_num, decision, email)
+    return render_template('search_reports.html')
+
+@app.route('/search_approved')
+@auth.login_required
+def search_approved_reports():
+    return render_template('search_approved_reports.html')
+
+@app.route('/view_approved_reports', methods=['GET', 'POST'])
+@auth.login_required
+def view_approved_reports():
+    r_type = request.form['report_type']
+    order_by = request.form['order']
+    rows = display_approved_records(r_type, order_by)
+    r_ids = [rows[i][0] for i in range(0, len(rows))]
+    size = len(rows)
+    return render_template('approved_report_results.html', rows=rows, size=size, r_ids=r_ids)
+
+@app.route('/edit_file_form', methods=['GET', 'POST'])
+@auth.login_required
+def edit_file_form():
+    report_num = request.form['edit']
+    t_link = get_link(report_num)
+    return render_template('edit_file_form.html', report_num=report_num, t_link=t_link)
+    
+@app.route('/edit_t_link', methods=['GET', 'POST'])
+@auth.login_required
+def edit_transcript_link():
+    report_num = request.form['t_link']
+    new_t_link = request.form['new_t_link']
+    edit_t_link(report_num, new_t_link)
+    return render_template('edit_file_form.html', report_num=report_num)
+
+@app.route('/edit_a_link', methods=['GET', 'POST'])
+@auth.login_required
+def edit_audio_link():
+    report_num = request.form['a_link']
+    new_a_link = request.form['new_a_link']
+    edit_a_link(report_num, new_a_link)
+    return render_template('edit_file_form.html', report_num=report_num)
+    
+@app.route('/edit_metadata_form', methods=['GET', 'POST'])
+@auth.login_required
+def edit_metadata_form():
+    md_type = request.form['md_change']
+    report_num = request.form['r_num']
+    return render_template('edit_metadata_form.html', report_num=report_num, md_type=md_type)
+    
+@app.route('/edit_metadata', methods=['GET', 'POST'])
+@auth.login_required
+def edit_metadata():
+    md_type = request.form['md_type']
+    report_num = request.form['r_num']
+    new_info = request.form['new_info']
+    edit_md(md_type, report_num, new_info)
+    return render_template('edit_file_form.html', report_num=report_num)
+    
+@app.route('/add_file_form', methods=['GET', 'POST'])
+@auth.login_required
+def add_file_form():
+    ct = datetime.datetime.now()
+    return render_template('add_file_form.html', ct=ct)
+    
+@app.route('/add_file', methods=['GET', 'POST'])
+@auth.login_required
+def add_file():
+    a_id = request.form['a_id']
+    title = request.form['title']
+    d_pub = request.form['d_pub']
+    pub = request.form['pub']
+    desc = request.form['desc']
+    a_lang = request.form['a_lang']
+    a_file = request.form['a_file']
+    d_interview = request.form['d_interview']
+    interviewer = request.form['inter']
+    interviewee = request.form['intee']
+    t_file = request.form['t_file']
+    transcriber = request.form['transcriber']
+    t_lang = request.form['t_lang']
+    create_file(a_id, title, d_pub, pub, desc, a_lang, a_file, d_interview, interviewer, interviewee, t_file, transcriber, t_lang)
+    curr_role = check_role(auth.current_user())
+    if curr_role == 'admin':
+        return render_template('a_profile_page.html')
+    elif curr_role == 'sadmin':
+        return render_template('sa_profile_page.html')
+    else:
+        return render_template('index.html')
+
+@app.route('/edit_admin_status_search', methods=['GET', 'POST'])
+@auth.login_required
+def edit_admin_status_search():
+    return render_template('privilege_search_user.html')  
+        
+@app.route('/edit_admin_status_view', methods=['GET', 'POST'])
+@auth.login_required
+def edit_admin_status_view():
+    userquery = request.form['user']
+    rows = privilege_display_users(userquery)
+    u_emails = [rows[i][0] for i in range(0, len(rows))]
+    size = len(rows)
+    return render_template('privilege_user_results.html', rows=rows, size=size, u_emails=u_emails)
+    
+@app.route('/edit_admin_status', methods=['GET', 'POST'])
+@auth.login_required
+def edit_admin_status():
+    email = request.form['email']
+    role = check_role(email)
+    if role == 'user':
+        set_role(email, 'admin')
+    elif role == 'admin':
+        set_role(email, 'user')
+    else:
+        flash('Error- cannot downgrade a system admin or a non-user')
+    return render_template('privilege_search_user.html')
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     return render_template('signup_page.html')
@@ -58,24 +287,33 @@ def new_user():
     flash('Thank you for signing up, ' + name + '!')
     return render_template('index.html')
     
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    return render_template('login_page.html')
+#@app.route('/login', methods=['GET', 'POST'])
+#def login():
+#    return render_template('login_page.html')
     
-@app.route('/login_verify', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
+@auth.login_required
 def login_verification():
-    email = request.form['email']
-    password = request.form['password']
-    curr_user = verify_password(email, password)
-    if curr_user is None:
+    #email = request.form['email']
+    #password = request.form['password']
+    #verify_password(email, password)
+    if auth.current_user() is None:
         return render_template('index.html')
-        
-    curr_role = check_role(email)
-    if curr_role == 'user':
-        return render_template('u_profile_page.html')
-    #elif curr_role == 'admin':
-    #elif curr_role == 'sadmin':
-    return render_template('index.html')
+    else:
+        curr_role = check_role(auth.current_user())
+        if curr_role == 'user':
+            return render_template('u_profile_page.html')
+        elif curr_role == 'admin':
+            return render_template('a_profile_page.html')
+        elif curr_role == 'sadmin':
+            return render_template('sa_profile_page.html')
+
+#@app.route('/logout')
+#@auth.login_required
+#def logout():
+#    flash('Goodbye {}, you have been logged out!'.format(auth.current_user()))
+#    curr_user = verify_password('jefhirejfu84u44r4u8uru4', 'dheuhfhruhfeyyygryg5u4y5')
+#    return render_template('index.html')
 
 @auth.verify_password
 def verify_password(email, password):
@@ -83,13 +321,14 @@ def verify_password(email, password):
     if curr_user is None:
         flash("Invalid login credentials, try again")
         return None
-    return email
+    else:
+        return email
 
-#search route
-@app.route('/search', methods=['GET','POST'])
+@app.route('/search')
 def search():
-    #search options
+    #filter search by keywords, interviewer, interviewee, race, city
     choices = ['Keywords','Interviewer','Interviewee', 'Race','City']
+    
     return render_template('search_page.html',choices=choices)
     
 #search resultss route
@@ -115,10 +354,9 @@ def audio_file():
     transcript = transcript_data[0][3]#link to transcript
     metadata = a_file[0][6]#description
     return render_template('audio-file.html', af_id = af_id, title=title,raw_audio=raw_audio,transcript=transcript,metadata=metadata)
-
    
 @app.route('/report', methods=['GET','POST'])
-#@auth.login_required
+@auth.login_required
 #get user to file a report
 def report():
     af_id = request.form['id']
@@ -146,11 +384,11 @@ def trans_report():
         return render_template('report.html',af_id=af_id)
         
 @app.route('/metadata', methods=['GET','POST'])
-#@auth.login_required
+@auth.login_required
 #get user to request to add metadata
 def metadata():
     af_id = request.form['id']
-    types = ['audio','transcript']
+    types = ['name','age','city','date created']
     return render_template('metadata.html', af_id=af_id,types=types)
     
 @app.route('/metadata_submit', methods=['GET','POST'])
@@ -173,9 +411,9 @@ def meta_report():
         
     else:
         flash('Blank Description')
-        types = ['audio','transcript']
+        types = ['name','age','city','date created']
         return render_template('metadata.html',af_id=af_id,types=types)
-
+    
 
 if __name__ == '__main__':
     app.run(debug = True)

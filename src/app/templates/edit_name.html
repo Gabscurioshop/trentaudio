@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Change Name</h2>
+<br>
+    <form action="/edit_name" method="POST">
+        <div>
+        New Name
+        <input type="text" name="new_name">
+        </div>
+        
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

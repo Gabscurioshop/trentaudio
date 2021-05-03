@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<input type ="button" value="Back to Home" onclick="window.location.href='/'">
+<h2>Search Users</h2>
+<br>
+ <form action="/view_users" method="POST">
+    <div>
+    <input type="text" name="user">
+    </div>
+
+    <input type="submit" value="Submit">
+ </form>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2> Welcome! </h2>
+<br>
+    Start Searching:
+    <div>
+    <input type="button" value="Search" onclick="window.location.href='/search'"> <br>
+    View Users:
+    <input type="button" value="View Users" onclick="window.location.href='/search_users'"> <br>
+    View Reports:
+    <input type="button" value="View Reports" onclick="window.location.href='/search_reports'"> <br>
+    Make Changes to Audio Files:
+    <input type="button" value="View Approved Reports" onclick="window.location.href='/search_approved'"> <br>
+    Add Audio File:
+    <input type="button" value="Add File" onclick="window.location.href='/add_file_form'"> <br> <br>
+    Change Administrators:
+    <input type="button" value="Change Admins" onclick="window.location.href='/edit_admin_status_search'"> <br> <br>
+    Edit Your Account Information:<br>
+    <input type="button" value="Change Email" onclick="window.location.href='/edit_email_form'"> <br>
+    <input type="button" value="Change Name" onclick="window.location.href='/edit_name_form'"> <br>
+    <input type="button" value="Change Password" onclick="window.location.href='/edit_password_form'"> <br>
+    </div>
+    
+{% endblock %}

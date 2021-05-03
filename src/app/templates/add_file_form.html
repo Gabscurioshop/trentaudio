@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Add File</title>
+    </head>
+    <form action='/add_file' method='POST'>
+        <div>
+        Audio File ID:
+        <input type="text" name="a_id"> <br>
+        Title:
+        <input type="text" name="title"> <br>
+        Date Published:
+        <input type="text" name="d_pub" value="{{ct}}"> <br>
+        Publisher
+        <input type="text" name="pub"> <br>
+        Description:
+        <input type="text" name="desc"> <br>
+        Audio Language:
+        <input type="text" name="a_lang"> <br>
+        Audio File:
+        <input type="text" name="a_file"> <br>
+        Date Interviewed:
+        <input type="text" name="d_interview"> <br>
+        Interviewer ID:
+        <input type="text" name="inter"> <br>
+        Interviewee ID:
+        <input type="text" name="intee"> <br>
+        Transcript File:
+        <input type="text" name="t_file"> <br>
+        Transcriber:
+        <input type="text" name="transcriber"> <br>
+        Transcription Language:
+        <input type="text" name="t_lang"> <br>
+        </div>
+        <button name="r_num" type="submit" value="{{report_num}}">Submit Change</button>
+    </form>
+{%endblock%}

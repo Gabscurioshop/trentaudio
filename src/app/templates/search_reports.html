@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<input type ="button" value="Back to Home" onclick="window.location.href='/'">
+<h2>Select Reports to View</h2>
+<br>
+ <form action="/view_reports" method="POST">
+    <div>
+    <input type="radio" id="t_error" name="report_type" value="Transcript Error">
+    <label for="t_error"> Transcript Error </label>
+    <input type="radio" id="md_edit" name="report_type" value="Metadata Edit">
+    <label for="md_edit"> Metadata Edit Request </label> <br>
+    <input type="radio" id="recent" name="order" value="Recent First">
+    <label for="recent"> Order by Most Recent First </label> <br>
+    <input type="radio" id="oldest" name="order" value="Oldest First">
+    <label for="oldest"> Order by Oldest First </label> <br>
+    </div>
+
+    <input type="submit" value="Submit">
+ </form>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Approved Reports</title>
+    </head>
+    <!--Returns to search page-->
+     <input type ="button" value="Back to Search" onclick="window.location.href='/search_approved'">
+      
+    <!-- Adding some style to table (OPTIONAL) -->
+    <style type="text/css">
+
+    th:tr{
+        color: blue;
+    }
+    tr:nth-of-type(2n){
+        border: 1px solid black;
+        background-color: rgba(150, 150, 150, 0.5);
+    }
+
+    td{
+        padding: 8px 8px;
+        border: 1px solid black;
+    }
+    </style>
+    
+    <body>
+      <!-- IF there are no tuples, print "No results found"-->
+     {%if size == 0 %}
+     No results found
+     
+     {% else %}
+     <!-- Display User info -->
+     <table id ="myTable" >
+     <th>Report Number</th>
+     <th>Audio File</th>
+	 <th>Submitted By</th>
+	 <th>Description</th>
+	 <th>Date Uploaded</th>
+	 <th>Decision</th>
+	 {%for row in rows%}
+	    <tr> 
+	         
+	    {%for col in row%}
+	    
+	        <td>{{col}}</td>
+	    {%endfor%}
+	    <td>
+	    <!--Click to decide on-->
+        <form action="/edit_file_form" method ="POST">
+        <button name="edit" type="submit" value="{{row[0]}}">MAKE EDIT</button>
+	    </tr>
+	{%endfor%}
+	</table>
+	{%endif%}
+    </body>
+{%endblock%}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Edit Audio File Information</title>
+    </head>
+    <td> File: {{report_num}} </td> <br>
+    To edit the transcript itself, follow the link below and edit it there: <br>
+    Link: <a href="{{t_link}}">Transcript</a> <br>
+    
+    <form action='/edit_t_link' method='POST'>
+        <div>
+        New Transcript Link: 
+        <input type="text" name="new_t_link">
+        </div>
+        <button name="t_link" type="submit" value="{{report_num}}">Edit Transcript Link</button> <br>
+    </form>
+    <form action='/edit_a_link' method='POST'>
+        <div>
+        New Audio Link: 
+        <input type="text" name="new_a_link">
+        </div>
+        <button name="a_link" type="submit" value="{{report_num}}">Edit Audio Link</button> <br>
+    </form>
+    
+    <form action="/edit_metadata_form" method="POST">
+    Edit Metadata:
+    <div>
+        Select A Type of Metadata to Edit <br>
+        <input type="radio" id="a_id" name="md_change" value="Change ID">
+        <label for="a_id"> Change Audio ID </label>
+        <input type="radio" id="d_pub" name="md_change" value="Change Date Uploaded">
+        <label for="d_pub"> Change Date Published </label> <br>
+        <input type="radio" id="pub" name="md_change" value="Change Publisher">
+        <label for="pub"> Change Publisher </label>
+        <input type="radio" id="a_lang" name="md_change" value="Change Audio Language">
+        <label for="a_lang"> Change Audio Language </label> <br>
+        <input type="radio" id="date_interview" name="md_change" value="Change Date Interviewed">
+        <label for="date_interview"> Change Date Interviewed </label>
+        <input type="radio" id="title" name="md_change" value="Change Title">
+        <label for="title"> Change Title </label> <br>
+        <input type="radio" id="description" name="md_change" value="Change Description">
+        <label for="description"> Change Description </label> <br>
+        <input type="radio" id="transcriber" name="md_change" value="Change Transcriber">
+        <label for="transcriber"> Change Transcriber </label> <br>
+        <input type="radio" id="t_lang" name="md_change" value="Change Transcript Language">
+        <label for="t_lang"> Change Transcript Language </label> <br>
+        
+        <input type="radio" id="inter_gender" name="md_change" value="Change Interviewer Gender">
+        <label for="inter_gender"> Change Interviewer Gender </label> 
+        <input type="radio" id="inter_age" name="md_change" value="Change Interviewer Age">
+        <label for="inter_age"> Change Interviewer Age </label> <br>
+        <input type="radio" id="inter_name" name="md_change" value="Change Interviewer Name">
+        <label for="inter_name"> Change Interviewer Name </label> 
+        <input type="radio" id="inter_race" name="md_change" value="Change Interviewer Race">
+        <label for="inter_race"> Change Interviewer Race </label> <br>
+        
+        <input type="radio" id="intee_gender" name="md_change" value="Change Interviewee Gender">
+        <label for="intee_gender"> Change Interviewee Gender </label>
+        <input type="radio" id="intee_age" name="md_change" value="Change Interviewee Age">
+        <label for="intee_age"> Change Interviewee Age </label>
+        <input type="radio" id="intee_name" name="md_change" value="Change Interviewee Name">
+        <label for="intee_name"> Change Interviewee Name </label> <br>
+        <input type="radio" id="intee_city" name="md_change" value="Change Interviewee City">
+        <label for="intee_city"> Change Interviewee City</label> 
+        <input type="radio" id="intee_state" name="md_change" value="Change Interviewee State">
+        <label for="intee_state"> Change Interviewee State </label> 
+        <input type="radio" id="intee_race" name="md_change" value="Change Interviewee Race">
+        <label for="intee_race"> Change Interviewee Race </label> <br>
+    </div>
+    <button name="r_num" type="submit" value="{{report_num}}">Submit Metadata Type</button> <br>
+    </form>
+    
+    <input type ="button" value="Back to Search" onclick="window.location.href='/search_approved'"> <br>
+    
+{%endblock%}

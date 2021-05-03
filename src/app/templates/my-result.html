@@ -24,7 +24,7 @@
     
     <body>
 	<table>
-	<h1>Audio_Files</h1>
+	<h1>Audio Files</h1>
         <!-- nested for loops in jinja template -->
    <!-- Display all data for search results    
 	 {%for row in rows%}
@@ -38,7 +38,7 @@
 	</table>
     -->
 	 <form action="/audio-file-handler" method="POST">
-	    <select name= titles method="GET" action="/" >
+	    <select name= titles method="GET" action="/search" >
         {% for title in titles %}
         <option value= "{{title}}" SELECTED>{{title}}</option>"
         {% endfor %}

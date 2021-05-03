@@ -2,7 +2,7 @@ import psycopg2
 from flask import Flask, flash
 from config import config
 
-def change_email(email):
+def change_email(email, old_email):
     conn = None
     curr_user = None
     try:
@@ -15,7 +15,7 @@ def change_email(email):
       
         # create a cursor
         cur = conn.cursor()
-        cur.execute("UPDATE USR SET USR_EMAIL = '" + email + "' WHERE USR_EMAIL = '" + email + "'")
+        cur.execute("UPDATE USR SET USR_EMAIL = '" + email + "' WHERE USR_EMAIL = '" + old_email + "'")
         try:
             conn.commit()
         except psycopg2.Error as e:

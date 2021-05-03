@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Edit Metadata of: <td>{{md_type}}</td> </title>
+    </head>
+    <td> File: {{report_num}} </td> <br>
+    <form action='/edit_metadata' method='POST'>
+        <div>
+        <input type="text" name="md_type" value="{{md_type}}"> <br>
+        Enter the new data below: <br>
+        <input type="text" name="new_info">
+        </div>
+        <button name="r_num" type="submit" value="{{report_num}}">Submit Change</button>
+    </form>
+{%endblock%}

@@ -93,4 +93,3 @@ def search_audio(choice, query):
             print('Database connection closed.')
     # return the query result from fetchall()
     return rows
-

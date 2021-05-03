@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+    <head>
+        <title>Users</title>
+        Allows for downgrading of admin privileges and upgrading users to admins.
+    </head>
+    <!--Returns to search page-->
+     <input type ="button" value="Back to Search" onclick="window.location.href='/edit_admin_status_search'">
+      
+    <!-- Adding some style to table (OPTIONAL) -->
+    <style type="text/css">
+
+    th:tr{
+        color: blue;
+    }
+    tr:nth-of-type(2n){
+        border: 1px solid black;
+        background-color: rgba(150, 150, 150, 0.5);
+    }
+
+    td{
+        padding: 8px 8px;
+        border: 1px solid black;
+    }
+    </style>
+    
+    <body>
+      <!-- IF there are no tuples, print "No results found"-->
+     {%if size == 0 %}
+     No results found
+     
+     {% else %}
+     <!-- Display User info -->
+     <table id ="myTable" >
+     <th>Email</th>
+     <th>Name</th>
+	 <th>Role</th>
+	 <th>Action</th>
+	 {%for row in rows%}
+	    <tr> 
+	         
+	    {%for col in row%}
+	    
+	        <td>{{col}}</td>
+	    {%endfor%}
+	    <td>
+	    <!--Click to block-->
+        <form action="/edit_admin_status" method ="POST">
+        <button name="email" type="submit" value="{{row[0]}}">CHANGE ADMININSTRATIVE STATUS</button>
+        </form>
+	    </tr>
+	{%endfor%}
+	</table>
+	{%endif%}
+    </body>
+{%endblock%}
