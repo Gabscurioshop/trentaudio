@@ -27,14 +27,15 @@
     
     <body>
 	<h1>Audio Files</h1>
-	  Sort by Date: <p><button onclick="sortTable(0)">Oldest</button> 
-	   <button onclick="sortTable(1)">Recent</button> 
-	   </p>
+
       <!-- IF there are no tuples, print "No results found"-->
      {%if size == 0 %}
      No results found
      
      {% else %}
+     Sort by Date: <p><button onclick="sortTable(0)">Oldest</button> 
+     <button onclick="sortTable(1)">Recent</button> 
+     </p>
      <!-- Display Audio file id, title, description -->
      <table id ="myTable" >
      <th>ID</th>
