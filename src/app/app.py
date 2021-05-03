@@ -129,7 +129,7 @@ def trans_report():
     af_id = request.form['id']
     err_desc = request.form['error_description'] 
     if err_desc:
-        add_error(err_desc)#add report to database
+        add_error(err_desc,af_id)#add report to database
         flash('Report filed!')
         
         #retrieve audio data
@@ -159,7 +159,7 @@ def meta_report():
     err_desc = request.form['description']
     choice = request.form['types']#metadata type 
     if err_desc and choice:
-        edit_md(err_desc, choice)#add report to database
+        edit_md(err_desc, choice, af_id)#add report to database
         flash('Metadata request filed!')
         
         #retrieve audio data

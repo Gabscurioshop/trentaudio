@@ -1,9 +1,9 @@
 import psycopg2
 from config import config
     
-def trans_report(cur, err_desc):
+def trans_report(cur, err_desc,af_id):
     res = ''
-    cur.execute("INSERT INTO REPORT (type, usr_email, a_email, decision) VALUES ('trans_error', 'vbradley@university.com', NULL,NULL)")
+    cur.execute("INSERT INTO REPORT (type,audio_file_id, usr_email, a_email, decision) VALUES ('trans_error','{}', 'vbradley@university.com', NULL,'pending')".format(af_id))
     cur.execute("CREATE VIEW MAX_TRANS AS SELECT USR_EMAIL, MAX(REPORT_NUM) FROM REPORT WHERE TYPE='trans_error' GROUP BY USR_EMAIL")
     cur.execute("CREATE VIEW USR_ERR AS SELECT MAX FROM MAX_TRANS WHERE USR_EMAIL = 'vbradley@university.com'")
     cur.execute("SELECT * FROM USR_ERR")
@@ -15,7 +15,7 @@ def trans_report(cur, err_desc):
     cur.execute("DROP VIEW USR_ERR")
     cur.execute("DROP VIEW MAX_TRANS")
     print("Done executing.")
-def add_error(err_desc):
+def add_error(err_desc, af_id):
 #Connect to database
     """ Connect to the PostgreSQL database server """
     conn = None
@@ -33,7 +33,7 @@ def add_error(err_desc):
         cur = conn.cursor()
         
         #add transcript error report to db
-        trans_report(cur, err_desc)
+        trans_report(cur, err_desc,af_id)
        # close the communication with the PostgreSQL
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
