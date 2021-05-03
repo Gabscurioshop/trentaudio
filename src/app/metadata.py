@@ -25,7 +25,7 @@ def edit_md(meta_desc,meta_type):
         params = config()
 
         # connect to the PostgreSQL server
-        print('Connecting to the %s database from report...' % (params['database']))
+        print('Connecting to the %s database from metadata...' % (params['database']))
         conn = psycopg2.connect(**params)
         print('Connected.')
         conn.autocommit = True

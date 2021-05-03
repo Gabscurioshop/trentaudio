@@ -127,7 +127,7 @@ def report():
 @app.route('/report_submit', methods=['GET','POST'])
 def trans_report():
     af_id = request.form['id']
-    err_desc = request.form['error_descripton'] 
+    err_desc = request.form['error_description'] 
     if err_desc:
         add_error(err_desc)#add report to database
         flash('Report filed!')
@@ -151,10 +151,31 @@ def trans_report():
 def metadata():
     af_id = request.form['id']
     types = ['audio','transcript']
-    return render_template('metadata.html',af_id=af_id,types=types)
+    return render_template('metadata.html', af_id=af_id,types=types)
     
-#@app.route('/metadata_submit', methods=['GET','POST'])
-#def meta_report():
+@app.route('/metadata_submit', methods=['GET','POST'])
+def meta_report():
+    af_id = request.form['id']
+    err_desc = request.form['description']
+    choice = request.form['types']#metadata type 
+    if err_desc and choice:
+        edit_md(err_desc, choice)#add report to database
+        flash('Metadata request filed!')
+        
+        #retrieve audio data
+        a_file = get_audio(af_id)
+        title = a_file[0][5]#title of audio_file
+        raw_audio = a_file[0][7]#link to raw audio
+        transcript_data = get_transcript(a_file[0][0])#audio_file_id
+        transcript = transcript_data[0][3]#link to transcript
+        metadata = a_file[0][6]#description
+        return render_template('audio-file.html', af_id = af_id, title=title,raw_audio=raw_audio,transcript=transcript,metadata=metadata)
+        
+    else:
+        flash('Blank Description')
+        types = ['audio','transcript']
+        return render_template('metadata.html',af_id=af_id,types=types)
+
 
 if __name__ == '__main__':
     app.run(debug = True)
