@@ -1,6 +1,6 @@
 # Trentaudio
 Welcome to Trentaudio!
-A project by Carolyn Holmes, Gabrielle Curcio, Xuanyi Zhao
+A project by Carolyne Holmes, Gabrielle Curcio, Xuanyi Zhao
 
 # Problem Statement
 Currently, the audio and visual content on the [Trentoniana Library](https://trentonlib.org/trentoniana/audio-visual/) provides limited metadata and no transcriptions on certain content. Our project aims at expanding the versatility of the Trentonian Library and making it a better tool for research. 
