@@ -1,3 +1,4 @@
+#retrieves the transcript link of a specific audio file of a report in the db- Coded by Carolyne
 import psycopg2
 from config import config
 
