@@ -35,33 +35,39 @@ auth = HTTPBasicAuth()
 #Flask-wtf requires encryption key
 app.config['SECRET_KEY'] = 'g77MdJuwaAXaLJ20Lx1DRcs161nPSOZP'
 
+#home page
 @app.route('/')
 def home():
     return render_template('index.html')
-    
+
+#allows user to login and go to their profile
 @app.route('/user_profile') 
 @auth.login_required
 def u_profile():
     flash('Hello {}!'.format(auth.current_user()))
     return render_template('u_profile_page.html')
-    
+
+#allows admin to login and go to their profile
 @app.route('/admin_profile') 
 @auth.login_required
 def a_profile():   
     flash('Hello {}!'.format(auth.current_user()))
     return render_template('a_profile_page.html')
-    
+
+#allows super admin to login and go to their profile
 @app.route('/sadmin_profile')
 @auth.login_required
 def sa_profile():
     flash('Hello {}!'.format(auth.current_user()))
     return render_template('sa_profile_page.html')
-    
+
+#gets form for new email to edit to in db
 @app.route('/edit_email_form', methods=['GET', 'POST'])
 @auth.login_required
 def e_email(): 
     return render_template('edit_email.html')
 
+#edits email in db and return to profile
 @app.route('/edit_email', methods=['GET', 'POST'])
 @auth.login_required
 def edit_email():
@@ -71,12 +77,14 @@ def edit_email():
         return render_template('u_profile_page.html')
     elif check_role(auth.current_user()) == 'admin':
         return render_template('a_profile_page.html')
- 
+
+#gets form for new password to edit to in db
 @app.route('/edit_password_form', methods=['GET', 'POST'])
 @auth.login_required
 def e_password():
     return render_template('edit_password.html')
     
+#edit password in db
 @app.route('/edit_password', methods=['GET', 'POST'])
 @auth.login_required
 def edit_password():
@@ -88,11 +96,13 @@ def edit_password():
     elif check_role(auth.current_user()) == 'admin':
         return render_template('a_profile_page.html')
     
+#gets form for new username to edit to in db
 @app.route('/edit_name_form', methods=['GET', 'POST'])
 @auth.login_required
 def e_name():
     return render_template('edit_name.html')
     
+#edit name in db
 @app.route('/edit_name', methods=['GET', 'POST'])
 @auth.login_required
 def edit_name():
@@ -103,11 +113,13 @@ def edit_name():
     elif check_role(auth.current_user()) == 'admin':
         return render_template('a_profile_page.html')
         
+#loads search form to get search terms for users like user email
 @app.route('/search_users', methods=['GET', 'POST'])
 @auth.login_required     
 def search_users():
     return render_template('search_user.html')  
         
+#searches db for users and displays them with button to block them    
 @app.route('/view_users', methods=['GET', 'POST'])
 @auth.login_required
 def view_users():
@@ -117,6 +129,7 @@ def view_users():
     size = len(rows)
     return render_template('user_results.html', rows=rows, size=size, u_emails=u_emails)
     
+#blocks the selected user when button clicked  
 @app.route('/block', methods=['GET', 'POST'])
 @auth.login_required
 def change_block_status():
@@ -125,11 +138,13 @@ def change_block_status():
     edit_block(user, status)
     return render_template('search_user.html')
     
+#form to get terms to search reports by    
 @app.route('/search_reports', methods=['GET', 'POST'])
 @auth.login_required
 def search_reports():
     return render_template('search_reports.html')
     
+#displays reports from search and buttons to approve or disapprove/reject the report so it will/wont change its file in db, respectively    
 @app.route('/view_reports', methods=['GET', 'POST'])
 @auth.login_required
 def view_reports():    
@@ -140,6 +155,7 @@ def view_reports():
     size = len(rows)
     return render_template('report_results.html', rows=rows, size=size, r_ids=r_ids)
     
+#approve file change in db    
 @app.route('/approve', methods=['GET', 'POST'])
 @auth.login_required
 def approve_report():
@@ -147,6 +163,7 @@ def approve_report():
     decide_on(report_num, 'Approved')
     return render_template('search_reports.html')
     
+#reject file change in db    
 @app.route('/disapprove', methods=['GET', 'POST'])
 @auth.login_required
 def reject_report():
@@ -154,6 +171,7 @@ def reject_report():
     decide_on(report_num, 'Disapproved') 
     return render_template('search_reports.html')  
 
+#changes report status in db and return to search page
 @app.route('/decide_on', methods=['GET', 'POST'])
 @auth.login_required
 def decide_on(report_num, decision):
@@ -161,11 +179,13 @@ def decide_on(report_num, decision):
     make_decision(report_num, decision, email)
     return render_template('search_reports.html')
 
+#form to search through only approved reports
 @app.route('/search_approved')
 @auth.login_required
 def search_approved_reports():
     return render_template('search_approved_reports.html')
 
+#sorts and displays approved reports from search & allow admin to edit the associated file
 @app.route('/view_approved_reports', methods=['GET', 'POST'])
 @auth.login_required
 def view_approved_reports():
@@ -176,13 +196,15 @@ def view_approved_reports():
     size = len(rows)
     return render_template('approved_report_results.html', rows=rows, size=size, r_ids=r_ids)
 
+#form to submit new info for file
 @app.route('/edit_file_form', methods=['GET', 'POST'])
 @auth.login_required
 def edit_file_form():
     report_num = request.form['edit']
     t_link = get_link(report_num)
     return render_template('edit_file_form.html', report_num=report_num, t_link=t_link)
-    
+
+#edits trancript link of file in db
 @app.route('/edit_t_link', methods=['GET', 'POST'])
 @auth.login_required
 def edit_transcript_link():
@@ -191,6 +213,7 @@ def edit_transcript_link():
     edit_t_link(report_num, new_t_link)
     return render_template('edit_file_form.html', report_num=report_num)
 
+#edits audio link of file in db
 @app.route('/edit_a_link', methods=['GET', 'POST'])
 @auth.login_required
 def edit_audio_link():
@@ -199,6 +222,7 @@ def edit_audio_link():
     edit_a_link(report_num, new_a_link)
     return render_template('edit_file_form.html', report_num=report_num)
     
+#get new metadata for file    
 @app.route('/edit_metadata_form', methods=['GET', 'POST'])
 @auth.login_required
 def edit_metadata_form():
@@ -206,6 +230,7 @@ def edit_metadata_form():
     report_num = request.form['r_num']
     return render_template('edit_metadata_form.html', report_num=report_num, md_type=md_type)
     
+#edit metadata of file in db    
 @app.route('/edit_metadata', methods=['GET', 'POST'])
 @auth.login_required
 def edit_metadata():
@@ -215,12 +240,14 @@ def edit_metadata():
     edit_md(md_type, report_num, new_info)
     return render_template('edit_file_form.html', report_num=report_num)
     
+#form gets info for the file to be added    
 @app.route('/add_file_form', methods=['GET', 'POST'])
 @auth.login_required
 def add_file_form():
     ct = datetime.datetime.now()
     return render_template('add_file_form.html', ct=ct)
     
+#adds new file to db    
 @app.route('/add_file', methods=['GET', 'POST'])
 @auth.login_required
 def add_file():
@@ -246,11 +273,13 @@ def add_file():
     else:
         return render_template('index.html')
 
+#get terms to search users by    
 @app.route('/edit_admin_status_search', methods=['GET', 'POST'])
 @auth.login_required
 def edit_admin_status_search():
     return render_template('privilege_search_user.html')  
-        
+ 
+#search through users and allow super admin to click button to change the role privilege of the user or admin    
 @app.route('/edit_admin_status_view', methods=['GET', 'POST'])
 @auth.login_required
 def edit_admin_status_view():
@@ -260,6 +289,7 @@ def edit_admin_status_view():
     size = len(rows)
     return render_template('privilege_user_results.html', rows=rows, size=size, u_emails=u_emails)
     
+#edits the users role in db and returns to search    
 @app.route('/edit_admin_status', methods=['GET', 'POST'])
 @auth.login_required
 def edit_admin_status():
@@ -273,10 +303,12 @@ def edit_admin_status():
         flash('Error- cannot downgrade a system admin or a non-user')
     return render_template('privilege_search_user.html')
 
+#get new user info from form
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     return render_template('signup_page.html')
     
+#add new user (role defaults to 'user') to db    
 @app.route('/signup_submit', methods=['GET','POST'])
 def new_user():
     email = request.form['email']
@@ -286,11 +318,8 @@ def new_user():
     create_user(email, name, password)
     flash('Thank you for signing up, ' + name + '!')
     return render_template('index.html')
-    
-#@app.route('/login', methods=['GET', 'POST'])
-#def login():
-#    return render_template('login_page.html')
-    
+
+#login user if they enter the right email and password and go to their profile    
 @app.route('/login', methods=['GET', 'POST'])
 @auth.login_required
 def login_verification():
@@ -308,6 +337,7 @@ def login_verification():
         elif curr_role == 'sadmin':
             return render_template('sa_profile_page.html')
 
+#old logout method
 #@app.route('/logout')
 #@auth.login_required
 #def logout():
@@ -315,6 +345,7 @@ def login_verification():
 #    curr_user = verify_password('jefhirejfu84u44r4u8uru4', 'dheuhfhruhfeyyygryg5u4y5')
 #    return render_template('index.html')
 
+#checks that the entered email matches the encrypted password
 @auth.verify_password
 def verify_password(email, password):
     curr_user = verify_user(email, password)
