@@ -1,3 +1,4 @@
+#creates a new user based on entered info with default role of 'user' in db- Coded by Carolyne
 import psycopg2
 from flask import Flask, flash
 from config import config
