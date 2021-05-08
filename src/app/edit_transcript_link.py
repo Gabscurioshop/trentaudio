@@ -1,3 +1,4 @@
+#change the link to the transcript for the file in db- Coded by Carolyne
 import psycopg2
 from config import config
 
