@@ -1,3 +1,4 @@
+#searches reports based on their type and if they are approved then display them in the date order entered (easrliest first vs. oldest first)- Coded by Carolyne
 import psycopg2
 from config import config
 
