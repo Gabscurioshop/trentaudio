@@ -24,6 +24,9 @@ pip3 install psycopg2-binary
 # install flask
 pip3 install flask
 
+# install HTTPAuth
+pip3 install Flask-HTTPAuth
+
 # logout, then login again to inherit new shell environment
 
 ----
