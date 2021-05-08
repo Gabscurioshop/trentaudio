@@ -17,7 +17,7 @@ Currently, the audio and visual content on the [Trentoniana Library](https://tre
 * View any issues in the issues tab
 * Clone this repo and push changes to your branch
 
-#Setup
+# Setup
 Before running this program, make sure you have Python3, Psycopg2, and PostgreSQL installed
 
 To run program, make sure you're in src folder and run the following command in your prompt: python3 run.py
