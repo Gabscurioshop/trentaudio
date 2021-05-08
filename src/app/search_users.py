@@ -1,3 +1,4 @@
+#search all users by some query and show their blocked status along with their info (used by admins and super admins)- Coded by Carolyne
 import psycopg2
 from config import config
 
