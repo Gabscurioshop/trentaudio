@@ -1,3 +1,4 @@
+#searches users in db based on the entered query and returns their information (used by super admins)- Coded by Carolyne 
 import psycopg2
 from config import config
 
