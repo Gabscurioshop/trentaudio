@@ -1,3 +1,4 @@
+#edits decision on report (accepted to make change to file vs. rejected so dont change file)- Coded by Carolyne
 import psycopg2
 from flask import Flask, flash
 from config import config
