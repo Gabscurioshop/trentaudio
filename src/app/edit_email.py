@@ -1,3 +1,4 @@
+#changes a user's email in the db- Coded by Carolyne
 import psycopg2
 from flask import Flask, flash
 from config import config
