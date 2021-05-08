@@ -35,3 +35,15 @@ This should create the database and populate the tables with data.
 To startup server, make sure you're in the app folder and run the following command: export FLASK_APP=app.py flask run 
 In your browser: go to 127.0.0.1:5000/ This link should take you to Trentaudio's home page. To stop server, hit Ctrl-C in your command prompt.
 
+# How to Use
+You can choose to login to access other features or just use the search feature without logging in.
+## User:
+  * You can search audio and edit your account information on your profile
+
+## Administrator:
+  * You can search audio, edit your account information, search & block/unblock users, add audio files to the database, and search reports made of records to approve/reject the changes or make changes to the audio file information
+
+## Super Administrator:
+  * This account can only be created in the PostgreSQL shell by editing the desired user's role to 'sadmin' via the command:
+    - UPDATE USR SET ROLE = 'sadmin' WHERE USR_EMAIL = 'email of the user you want to make super admin';
+  * You can do all that users and administrators can, but you can also upgrade the privilege of a user to an admin or downgrade the privilege of an admin to a user.
