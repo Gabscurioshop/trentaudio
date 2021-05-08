@@ -1,3 +1,4 @@
+#searches all records by their type and sorts the results in the entered date order- Coded by Carolyne
 import psycopg2
 from config import config
 
