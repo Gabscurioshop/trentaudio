@@ -1,3 +1,4 @@
+#change user's name in db- Coded by Carolyne
 import psycopg2
 from flask import Flask, flash
 from config import config
