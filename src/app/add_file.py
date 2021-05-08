@@ -1,3 +1,4 @@
+#adds file to database- Coded by Carolyne
 import psycopg2
 from flask import Flask, flash
 from config import config
