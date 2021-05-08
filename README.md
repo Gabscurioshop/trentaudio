@@ -19,6 +19,15 @@ Currently, the audio and visual content on the [Trentoniana Library](https://tre
 
 # Setup
 Before running this program, make sure you have Python3, Psycopg2, and PostgreSQL installed
+* install pip for Python 3
+sudo apt update
+sudo apt install python3-pip
+* install psycopg2
+pip3 install psycopg2-binary
+* install flask
+pip3 install flask
+* install HTTPAuth
+pip3 install Flask-HTTPAuth
 
 To run program, make sure you're in src folder and run the following command in your prompt: python3 run.py
 This should create the database and populate the tables with data.
